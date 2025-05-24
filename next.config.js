@@ -1,9 +1,4 @@
-let userConfig = undefined
-try {
-  userConfig = await import('./v0-user-next.config')
-} catch (e) {
-  // ignore error
-}
+// next.config.js
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -23,13 +18,18 @@ const nextConfig = {
   },
 }
 
-mergeConfig(nextConfig, userConfig)
+let userConfig
+try {
+  userConfig = require('./v0-user-next.config')
+} catch (e) {
+  // ignore error
+}
+
+if (userConfig) {
+  mergeConfig(nextConfig, userConfig)
+}
 
 function mergeConfig(nextConfig, userConfig) {
-  if (!userConfig) {
-    return
-  }
-
   for (const key in userConfig) {
     if (
       typeof nextConfig[key] === 'object' &&
@@ -45,4 +45,4 @@ function mergeConfig(nextConfig, userConfig) {
   }
 }
 
-export default nextConfig
+module.exports = nextConfig
