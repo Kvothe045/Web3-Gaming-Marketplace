@@ -1,4 +1,4 @@
-// next.config.js
+const path = require("path");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -15,6 +15,13 @@ const nextConfig = {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
+  },
+  webpack: (config) => {
+    // Add alias so '@' resolves to project root (same as "./")
+    config.resolve.alias["@"] = path.resolve(__dirname);
+
+    // Return the modified config
+    return config;
   },
 }
 
